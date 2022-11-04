@@ -117,7 +117,7 @@ func TestX509KeyPair(t *testing.T) {
 
 // Func for send data via type of structure. Для отправки данных через тип структуры.
 func BenchmarkChatClient(b *testing.B) {
-	ErrConRefused = errors.New("connection refused by server")
+	ErrConRefused := errors.New("connection refused by server")
 	var tests = []struct {
 		channel string
 	}{
@@ -134,8 +134,6 @@ func BenchmarkChatClient(b *testing.B) {
 			fmt.Printf("\n%s\n", test.channel)
 			prevchannel = test.channel
 		}
-
-		ErrConRefused = errors.New("connection refused by server")
 		errs := make(chan error)
 		var err error
 		b.ReportAllocs()
