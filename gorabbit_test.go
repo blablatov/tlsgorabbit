@@ -1,7 +1,6 @@
 package gorabbit
 
 import (
-	"amqp"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -9,6 +8,8 @@ import (
 	"log"
 	"os"
 	"testing"
+
+	"github.com/streadway/amqp"
 )
 
 func TestRabbitMQ(t *testing.T) {
