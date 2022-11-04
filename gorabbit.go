@@ -1,8 +1,16 @@
+// Base of idea to https://github.com/pandeptwidyaop/gorabbit. Thanks dude!
+// Added method ConnectTLS()
+
 package gorabbit
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/streadway/amqp"
 )
@@ -174,4 +182,59 @@ func (mq *RabbitMQ) Publish(event string, contentType string, message []byte) er
 		false,
 		m,
 	)
+}
+
+// Method of TLS.
+func (mq *RabbitMQ) ConnectTLS() error {
+	var err error
+	cfg := new(tls.Config)
+
+	// Checks to cert path, that must be
+	_, err = os.Open("cacert.pem")
+	fmt.Println(os.IsNotExist(err))
+	if err != nil {
+		log.Fatalf("File cacert.pem not found: %v", err)
+	}
+
+	// Certificate must be
+	cfg.RootCAs = x509.NewCertPool()
+	if ca, err := ioutil.ReadFile("cacert.pem"); err == nil {
+		cfg.RootCAs.AppendCertsFromPEM(ca)
+	}
+
+	// Checks to certs paths, that must be
+	_, err = os.Open("cert.pem")
+	fmt.Println(os.IsNotExist(err))
+	if err != nil {
+		log.Fatalf("File cert.pem not found: %v", err)
+	}
+	_, err = os.Open("key.pem")
+	fmt.Println(os.IsNotExist(err))
+	if err != nil {
+		log.Fatalf("File key.pem not found: %v", err)
+	}
+
+	// Loads client cert and key.
+	if cert, err := tls.LoadX509KeyPair("cert.pem", "key.pem"); err == nil {
+		cfg.Certificates = append(cfg.Certificates, cert)
+	}
+	log.Println("[tlsgorabbit] connecting to server")
+
+	// One should use Common Name (CN) PC, it a server name from certificate
+	conn, err := amqp.DialTLS("amqps://server-name-from-certificate", cfg)
+	if err != nil {
+		log.Fatalf("Error conn of server: %v", err)
+	}
+
+	mq.channel, err = conn.Channel()
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		<-mq.channel.NotifyClose(make(chan *amqp.Error))
+		mq.err <- ErrConRefused
+	}()
+
+	return nil
 }
