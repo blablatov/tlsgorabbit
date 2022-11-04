@@ -190,7 +190,7 @@ func (mq *RabbitMQ) ConnectTLS() error {
 	cfg := new(tls.Config)
 
 	// Checks to cert path, that must be
-	_, err = os.Open("cacert.pem")
+	_, err = os.Open("./cacert.pem")
 	fmt.Println(os.IsNotExist(err))
 	if err != nil {
 		log.Fatalf("File cacert.pem not found: %v", err)
