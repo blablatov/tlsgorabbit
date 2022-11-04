@@ -198,24 +198,24 @@ func (mq *RabbitMQ) ConnectTLS() error {
 
 	// Certificate must be
 	cfg.RootCAs = x509.NewCertPool()
-	if ca, err := ioutil.ReadFile("cacert.pem"); err == nil {
+	if ca, err := ioutil.ReadFile("./cacert.pem"); err == nil {
 		cfg.RootCAs.AppendCertsFromPEM(ca)
 	}
 
 	// Checks to certs paths, that must be
-	_, err = os.Open("cert.pem")
+	_, err = os.Open("./cert.pem")
 	fmt.Println(os.IsNotExist(err))
 	if err != nil {
 		log.Fatalf("File cert.pem not found: %v", err)
 	}
-	_, err = os.Open("key.pem")
+	_, err = os.Open("/key.pem")
 	fmt.Println(os.IsNotExist(err))
 	if err != nil {
 		log.Fatalf("File key.pem not found: %v", err)
 	}
 
 	// Loads client cert and key.
-	if cert, err := tls.LoadX509KeyPair("cert.pem", "key.pem"); err == nil {
+	if cert, err := tls.LoadX509KeyPair("./cert.pem", "./key.pem"); err == nil {
 		cfg.Certificates = append(cfg.Certificates, cert)
 	}
 	log.Println("[tlsgorabbit] connecting to server")
