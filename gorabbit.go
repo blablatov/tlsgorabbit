@@ -208,7 +208,7 @@ func (mq *RabbitMQ) ConnectTLS() error {
 	if err != nil {
 		log.Fatalf("File cert.pem not found: %v", err)
 	}
-	_, err = os.Open("/key.pem")
+	_, err = os.Open("./key.pem")
 	fmt.Println(os.IsNotExist(err))
 	if err != nil {
 		log.Fatalf("File key.pem not found: %v", err)
