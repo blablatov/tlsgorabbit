@@ -127,3 +127,17 @@ if err != nil {
     panic(err)
 }
 ```
+
+## TLS Support
+`Added method ConnectTLS()`  
+One should generates a CA and uses it to produce two certificate/key pairs.  
+```bash
+git clone https://github.com/rabbitmq/tls-gen tls-gen
+cd tls-gen/basic
+# private key password
+make PASSWORD=toor
+make verify
+make info
+ls -l ./result
+```
+
