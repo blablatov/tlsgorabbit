@@ -139,5 +139,13 @@ make PASSWORD=toor
 make verify
 make info
 ls -l ./result
+```  
+```Go
+   // start TLS connection
+    err = mq.ConnectTLS()
+
+    if err != nil {
+        panic(err)
+    }
 ```
 
