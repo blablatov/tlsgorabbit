@@ -224,10 +224,10 @@ func (mq *RabbitMQ) ConnectTLS() error {
 	// One should use Common Name (CN) PC, it a server name from certificate
 	conn, err := amqp.DialTLS("amqps://server-name-from-certificate", cfg)
 	if err == io.EOF {
-		log.Printf("Connect EOF") // Чтение завершено
+		log.Printf("EOF") // Read completed.
 	}
 	if err != nil {
-		return fmt.Errorf("Сбой чтения: %v", err)
+		return fmt.Errorf("Read fail EOF: %v", err)
 	}
 	log.Printf("Connect: %v, Err: %v", conn, err)
 
