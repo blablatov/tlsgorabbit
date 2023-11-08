@@ -1,4 +1,4 @@
-# gorabbit
+[![Go](https://github.com/blablatov/tlsgorabbit/actions/workflows/gorabbit-action.yml/badge.svg)](https://github.com/blablatov/tlsgorabbit/actions/workflows/gorabbit-action.yml)
 ## Rabbit MQ Publish & Subscribe
 
 Simple library for AMQP Rabbit MQ publish subscribe
